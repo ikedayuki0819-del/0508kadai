@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パーソナルタスク最適化システム 構築レポート</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        /* ふわっと浮かび上がるアニメーション */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+
+        /* スクロールバーを隠すユーティリティ */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        /* スマホモックアップ内の絶対配置用マーカー */
+        .pulse-marker {
+            box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased leading-relaxed">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-16 px-6 shadow-xl relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div class="max-w-6xl mx-auto relative z-10 animate-fade-in">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-500/30 text-blue-100 text-sm font-bold tracking-wider mb-4 border border-blue-400/30">SYSTEM ARCHITECTURE & DESIGN REPORT</span>
+            <h1 class="text-4xl md:text-5xl font-black mb-4 leading-tight">日々の業務を最適化する<br class="hidden md:block"/>タスク管理システム構築レポート</h1>
+            <p class="text-lg text-blue-100 max-w-2xl font-medium">多岐にわたる業務を効率的に管理し、朝一番の通知で一日の見通しを立てるためのパーソナルシステム。</p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-12 md:py-20 space-y-24">
+
+        <!-- 1. 4つのパーツの決め方 (System Architecture) -->
+        <section class="animate-fade-in delay-100">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-bold text-slate-800 inline-flex items-center gap-3">
+                    <i class="fa-solid fa-network-wired text-blue-600"></i>
+                    1. システムを構成する4つのパーツ
+                </h2>
+                <p class="mt-4 text-slate-600 max-w-3xl mx-auto">自身の多岐にわたる業務を効率的に管理するため、自動化と日常的なアクセス性を重視してシステムを構築しました。</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-stretch justify-between gap-4 md:gap-2 relative">
+                
+                <!-- Part 1 -->
+                <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border-t-4 border-emerald-400 z-10 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500 text-2xl mb-4 shadow-sm">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">トリガー</h3>
+                    <p class="text-sm font-bold text-emerald-600 mb-3 bg-emerald-50 px-3 py-1 rounded-full">GAS (時間主導型)</p>
+                    <p class="text-sm text-slate-600 text-left">毎朝、自動でその日のタスク状況が送られてくる仕組みを作るため、GASの時間主導型トリガーを選択しました。</p>
+                </div>
+
+                <!-- Arrow -->
+                <div class="hidden md:flex items-center justify-center text-slate-300 text-2xl z-0">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+                <div class="md:hidden flex justify-center text-slate-300 text-2xl py-2">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <!-- Part 2 -->
+                <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border-t-4 border-amber-400 z-10 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 text-2xl mb-4 shadow-sm">
+                        <i class="fa-solid fa-table"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">ソース元</h3>
+                    <p class="text-sm font-bold text-amber-600 mb-3 bg-amber-50 px-3 py-1 rounded-full">Googleスプレッドシート</p>
+                    <p class="text-sm text-slate-600 text-left">授業、進路部、YouTube制作、執筆といったジャンルの異なるタスクを一元管理し、全体の状況を俯瞰するためのデータベースとして採用しました。</p>
+                </div>
+
+                <!-- Arrow -->
+                <div class="hidden md:flex items-center justify-center text-slate-300 text-2xl z-0">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+                <div class="md:hidden flex justify-center text-slate-300 text-2xl py-2">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <!-- Part 3 -->
+                <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border-t-4 border-blue-500 z-10 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 text-2xl mb-4 shadow-sm">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">処理する場所</h3>
+                    <p class="text-sm font-bold text-blue-600 mb-3 bg-blue-50 px-3 py-1 rounded-full">Google Apps Script</p>
+                    <p class="text-sm text-slate-600 text-left">スプレッドシートからのデータ取得、AIへの要約指示、外部へのデータ送信までを一つの環境でシームレスに完結できるため選びました。</p>
+                </div>
+
+                <!-- Arrow -->
+                <div class="hidden md:flex items-center justify-center text-slate-300 text-2xl z-0">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+                <div class="md:hidden flex justify-center text-slate-300 text-2xl py-2">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <!-- Part 4 -->
+                <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border-t-4 border-green-500 z-10 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center text-green-500 text-3xl mb-4 shadow-sm">
+                        <i class="fa-brands fa-line"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">届ける先</h3>
+                    <p class="text-sm font-bold text-green-600 mb-3 bg-green-50 px-3 py-1 rounded-full">LINE</p>
+                    <p class="text-sm text-slate-600 text-left">学校での移動中など、PCを開けない状況でもスマートフォンから瞬時にタスクを確認できるよう、日常的に使用しているLINEを通知先に設定しました。</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 2. デザインの工夫 (UI/UX Design) -->
+        <section class="animate-fade-in delay-200">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-bold text-slate-800 inline-flex items-center gap-3">
+                    <i class="fa-solid fa-mobile-screen-button text-indigo-600"></i>
+                    2. 直感に訴えかけるデザインの工夫
+                </h2>
+                <p class="mt-4 text-slate-600 max-w-3xl mx-auto">パッと見た瞬間に必要な情報が脳に入ってくるよう、情報の優先順位と視覚的な工夫を凝らしました。</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-12 items-start bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+                
+                <!-- スマホ画面（画像）側 -->
+                <div class="w-full lg:w-5/12 flex justify-center">
+                    <div class="relative rounded-[2.5rem] border-[12px] border-slate-800 bg-slate-900 shadow-2xl overflow-hidden w-full max-w-[320px] h-[650px]">
+                        <!-- スピーカーノッチ -->
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-800 rounded-b-2xl z-30"></div>
+                        
+                        <!-- コンテンツエリア（スクロール可能） -->
+                        <div class="w-full h-full overflow-y-auto no-scrollbar relative z-10 cursor-ns-resize">
+                            <!-- スクロールされる中身のラッパー -->
+                            <div class="relative w-full h-auto">
+                                <!-- 実際の画像 -->
+                                <img src="Screenshot_20260507-094352.jpg" 
+                                     onerror="this.onerror=null; this.src='https://placehold.co/800x1700/f8fafc/94a3b8?text=Screen+Image+Not+Found'"
+                                     alt="報告ツールの画面" class="w-full h-auto block">
+
+                                <!-- 解説用マーカー（画像と一緒にスクロールされる） -->
+                                <!-- 1. 天気 -->
+                                <div class="absolute z-20 pulse-marker w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center font-bold shadow-lg" style="top: 11%; right: 12%;">1</div>
+                                <!-- 3. 表情 -->
+                                <div class="absolute z-20 pulse-marker w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center font-bold shadow-lg" style="top: 11%; right: 35%;">3</div>
+                                <!-- 2. 時間割 -->
+                                <div class="absolute z-20 pulse-marker w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center font-bold shadow-lg" style="top: 23%; left: 8%;">2</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 解説テキスト側 -->
+                <div class="w-full lg:w-7/12 space-y-6 pt-4">
+                    
+                    <!-- Point 1 -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-4 border-red-500 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-lg mt-1">1</div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-sun text-orange-400"></i> 天気の最上部配置
+                                </h3>
+                                <p class="text-slate-600 leading-relaxed">
+                                    よく傘を忘れてしまうという実体験から、天気の情報をレポートの最上部に持ってきました。<br>
+                                    朝一番の通知で、タスクの詳細を見るより先に<strong>「今日は傘が必要か」を直感的に判断できる</strong>ように設計しています。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 2 -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-4 border-red-500 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-lg mt-1">2</div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-regular fa-calendar-check text-blue-500"></i> 時間割の優先表示
+                                </h3>
+                                <p class="text-slate-600 leading-relaxed">
+                                    教員としての1日の仕事の流れをイメージしやすくするため、タスク一覧よりも先に時間割を上部に配置しました。<br>
+                                    これにより、現在の「空き時間（タスク実行可能時間）」が一目でわかり、<strong>急な時間割変更にも柔軟に対応</strong>できるようになっています。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Point 3 -->
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-4 border-red-500 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center font-bold text-lg mt-1">3</div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-regular fa-face-smile-wink text-yellow-500"></i> 表情によるタスク状況の可視化
+                                </h3>
+                                <p class="text-slate-600 leading-relaxed">
+                                    テキストを細かく読み込まなくても、その日のタスクの逼迫度や状況がひと目で感覚的に伝わるよう工夫しました。<br>
+                                    <strong>AIに状況を判断させ、それに適した表情（絵文字など）でステータスを表現</strong>させることで、心理的な負担を軽減しています。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 3 & 4. 課題と解決方法 (Challenges & Solutions) -->
+        <section class="animate-fade-in delay-300">
+            <div class="mb-10 text-center">
+                <h2 class="text-3xl font-bold text-slate-800 inline-flex items-center gap-3">
+                    <i class="fa-solid fa-mountain-sun text-orange-500"></i>
+                    3. ぶつかった課題と解決へのアプローチ
+                </h2>
+                <p class="mt-4 text-slate-600 max-w-3xl mx-auto">システム構築の中で直面した技術的な壁と、最新のAIツールを活用したブレイクスルー。</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- 課題セクション -->
+                <div class="bg-rose-50 rounded-3xl p-8 border border-rose-100 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-6 text-rose-200 text-6xl opacity-30"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <h3 class="text-2xl font-bold text-rose-800 mb-6 relative z-10">ぶつかった課題</h3>
+                    
+                    <div class="space-y-6 relative z-10">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-rose-400">
+                            <h4 class="font-bold text-slate-800 mb-2">① アクセス権限の壁</h4>
+                            <p class="text-slate-600 text-sm">複数のツールを連携させる際、アクセス権限の受け渡しがうまくいかず、エラーが頻発してしまいました。</p>
+                        </div>
+                        
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-rose-400">
+                            <h4 class="font-bold text-slate-800 mb-2">② LINEへの画像送信の仕組み</h4>
+                            <p class="text-slate-600 text-sm">HTMLで作成したデザインのレポート画像を、そのまま直接LINEに送信することができませんでした。LINEに送るためには、一度外部のサイトを経由して画像化・URL化するステップを踏む必要があり、その仕様に気付き、実装にたどり着くまでに非常に苦労しました。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 解決セクション -->
+                <div class="bg-gradient-to-br from-indigo-50 to-blue-100 rounded-3xl p-8 border border-blue-200 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-6 text-blue-200 text-6xl opacity-30"><i class="fa-solid fa-lightbulb"></i></div>
+                    <h3 class="text-2xl font-bold text-indigo-900 mb-6 relative z-10">その解決方法</h3>
+                    
+                    <div class="bg-white p-6 rounded-2xl shadow-md relative z-10 h-[calc(100%-4rem)] flex flex-col justify-center">
+                        <div class="flex justify-center gap-4 mb-6">
+                            <div class="bg-slate-800 text-white px-4 py-2 rounded-lg font-bold shadow flex items-center gap-2">
+                                <i class="fa-solid fa-terminal"></i> Cursor
+                            </div>
+                            <div class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold shadow flex items-center gap-2">
+                                <i class="fa-solid fa-sparkles"></i> Gemini
+                            </div>
+                        </div>
+                        
+                        <p class="text-slate-700 leading-loose text-lg font-medium text-center">
+                            自力だけで解決しようとせず、<br>
+                            AIツールである<strong>「Cursor」</strong>と<strong>「Gemini」</strong>に<br>
+                            何度も質問と相談を繰り返しました。
+                        </p>
+                        
+                        <div class="mt-6 pt-6 border-t border-slate-100">
+                            <p class="text-slate-600 text-sm leading-relaxed text-center">
+                                エラーが出るたびに状況を伝えて対話することで、複雑な権限設定や画像転送の仕組みを一つずつ紐解き、実装を完了させることができました。AIとの協働が最大の突破口となりました。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+        <p>© 2026 Personal Task Management System Report.</p>
+    </footer>
+
+</body>
+</html>
